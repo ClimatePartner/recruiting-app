@@ -1,3 +1,5 @@
+// NOTE: all typscript types are provided and do not need to be changed
+
 export type Project = {
   _id: string
   country: string

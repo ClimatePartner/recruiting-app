@@ -52,6 +52,8 @@ export default function OrderForm({
   const handleSubmit = useCallback(() => {
     const order = { name, offsetAmount }
     if (isValid(order)) {
+      // TODO: handle errors received from the server
+
       if (typeof selectedOrder === "undefined") {
         api.order.add(order).then(handleChange)
       } else {

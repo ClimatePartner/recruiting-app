@@ -91,10 +91,12 @@ export default function App() {
   )
 
   const handleDelete = useCallback((_id: string) => {
+    // TODO: handle errors received from the server
     api.order.delete(_id).then(setOrders)
   }, [])
 
   useEffect(() => {
+    // TODO: handle errors received from the server
     api.order.fetch().then(setOrders)
     api.project.fetch().then(setProjects)
   }, [])

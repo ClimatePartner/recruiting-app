@@ -14,6 +14,10 @@ const orders = new Datastore({
   autoload: true
 })
 
+// PROJECT ENDPOINTS
+// =================
+
+// Fetch all projects
 app.get("/project", async (_, response) => {
   try {
     const docs = await projects.find<Project>({}).exec()
@@ -23,6 +27,12 @@ app.get("/project", async (_, response) => {
   }
 })
 
+// TODO: implement project update endpoint
+
+// ORDER ENDPOINTS
+// ===============
+
+// Fetch all orders
 app.get("/order", async (_, response) => {
   try {
     const docs = await orders.find<Order>({}).exec()
@@ -30,7 +40,10 @@ app.get("/order", async (_, response) => {
   } catch (error) {}
 })
 
+// Add a new order
 app.post<{ Body: Project }>("/order/add", async (request, response) => {
+  // TODO: update associated project to reflect the change in available offset
+
   try {
     const result = await orders.insert({
       ...request.body,
@@ -42,7 +55,10 @@ app.post<{ Body: Project }>("/order/add", async (request, response) => {
   }
 })
 
+// Update a single order
 app.put<{ Body: Project }>("/order/update", async (request, response) => {
+  // TODO: update associated project to reflect the change in available offset
+
   try {
     const numUpdated = await orders.update(
       { _id: request.body._id },
@@ -58,10 +74,13 @@ app.put<{ Body: Project }>("/order/update", async (request, response) => {
   }
 })
 
+// Delete a single order
 app.delete<{ Params: { _id: string } }>(
   "/order/delete/:_id",
   async (request, response) => {
     const _id = request.params._id
+
+    // TODO: update associated project to reflect the change in available offset
 
     try {
       const numRemoved = await orders.remove({ _id }, {})
@@ -76,6 +95,9 @@ app.delete<{ Params: { _id: string } }>(
     }
   }
 )
+
+// BOOTSTRAP SERVER
+// ================
 
 app.listen(port, () => {
   app.log.info(`Fastify server running on port ${port}`)
