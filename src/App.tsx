@@ -101,7 +101,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Paper className={classes.app}>
+      <Paper square className={classes.app}>
         <Grid container className={classes.container}>
           <Grid item xs={11}>
             <Typography className={classes.heading} variant="h4">
