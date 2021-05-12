@@ -41,7 +41,7 @@ app.get("/order", async (_, response) => {
 })
 
 // Add a new order
-app.post<{ Body: Project }>("/order/add", async (request, response) => {
+app.post<{ Body: Order }>("/order/add", async (request, response) => {
   // TODO: update associated project to reflect the change in available offset
 
   try {
@@ -56,31 +56,30 @@ app.post<{ Body: Project }>("/order/add", async (request, response) => {
 })
 
 // Update a single order
-app.put<{ Body: Project }>("/order/update", async (request, response) => {
-  // TODO: update associated project to reflect the change in available offset
-
-  try {
-    const numUpdated = await orders.update(
-      { _id: request.body._id },
-      { ...request.body, _modifiedAt: new Date().getTime() }
-    )
-    if (numUpdated === 1) {
-      response.send(request.body)
-    } else {
-      throw new Error(`Could not update order with _id ${request.body._id}.`)
+app.put<{ Body: Order; Params: { id: string } }>(
+  "/order/:id",
+  async (request, response) => {
+    try {
+      const numUpdated = await orders.update(
+        { _id: request.params.id },
+        { ...request.body, _modifiedAt: new Date().getTime() }
+      )
+      if (numUpdated === 1) {
+        response.send(request.body)
+      } else {
+        throw new Error(`Could not update order with _id ${request.body._id}.`)
+      }
+    } catch (error) {
+      response.send(error)
     }
-  } catch (error) {
-    response.send(error)
   }
-})
+)
 
 // Delete a single order
 app.delete<{ Params: { _id: string } }>(
   "/order/delete/:_id",
   async (request, response) => {
     const _id = request.params._id
-
-    // TODO: update associated project to reflect the change in available offset
 
     try {
       const numRemoved = await orders.remove({ _id }, {})
