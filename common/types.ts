@@ -12,7 +12,8 @@ export type Order = {
   _id: string
   _createdAt: string
   _modifiedAt: string
-  name: string
+  projectId: string
+  projectName: string
   offsetAmount: number
 }
 

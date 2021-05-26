@@ -14,9 +14,18 @@ import { makeStyles } from "@material-ui/styles"
 import api from "./api"
 import { Order, Project } from "../common/types"
 
+/**
+ * TODOS
+ * 1. Obtain projects from parent component
+ *  1a. hint: uncomment line 27 for typescript support
+ * 2. Update project id on change (line 94)
+ * 3. Add project names as options in the Select dropdown (line 98)
+ * 4. Handle errors received from the server using an appropriate component from Material-UI (lines 60 & 62)
+ */
+
 type Props = {
   isOpen: boolean
-  projects: Project[]
+  // projects: Project[]
   selectedOrder?: Order
   handleChange(order: Order): void
   handleClose(): void
@@ -28,42 +37,39 @@ const useStyles = makeStyles({
   }
 })
 
-function isValid({ name, offsetAmount }: Partial<Order>): boolean {
-  return name !== "" && offsetAmount !== 0
-}
-
 export default function OrderForm({
   isOpen,
-  projects,
   selectedOrder,
   handleChange,
   handleClose
 }: Props) {
   const classes = useStyles()
 
-  const [name, setName] = useState<string>("")
+  const [projectName, setProjectName] = useState<string>("")
+  const [projectId, setProjectId] = useState<string>("")
   const [offsetAmount, setOffsetAmount] = useState<number>(0)
 
   useEffect(() => {
-    setName(selectedOrder?.name ?? "")
+    setProjectName(selectedOrder?.projectName ?? "")
     setOffsetAmount(selectedOrder?.offsetAmount ?? 0)
   }, [selectedOrder])
 
   const handleSubmit = useCallback(() => {
-    const order = { name, offsetAmount }
-    if (isValid(order)) {
-      // TODO: handle errors received from the server
-
-      if (typeof selectedOrder === "undefined") {
-        api.order.add(order).then(handleChange)
-      } else {
-        api.order
-          .update({ ...order, _id: selectedOrder._id })
-          .then(handleChange)
-      }
+    const order = { projectId, projectName, offsetAmount }
+    if (typeof selectedOrder === "undefined") {
+      api.order.add(order).then(handleChange)
+    } else {
+      api.order.update({ ...order, _id: selectedOrder._id }).then(handleChange)
     }
     handleClose()
-  }, [name, offsetAmount, selectedOrder, handleChange, handleClose])
+  }, [
+    projectId,
+    projectName,
+    offsetAmount,
+    selectedOrder,
+    handleChange,
+    handleClose
+  ])
 
   return (
     <Dialog
@@ -83,14 +89,14 @@ export default function OrderForm({
               id="name"
               labelId="name-label"
               fullWidth
-              value={name}
-              onChange={({ target: { value } }) => setName(value as string)}
+              value={projectName}
+              onChange={({ target: { value } }) => {
+                // TODO: call setProjectId using value as projectName to lookup projectId
+                setProjectName(value as string)
+              }}
             >
-              {projects.map(({ _id, name }) => (
-                <MenuItem key={_id} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
+              {/* TODO: add project names as options using MenuItem */}
+              <MenuItem value="placeholder">placeholder</MenuItem>
             </Select>
           </Grid>
           <Grid item xs={12}>

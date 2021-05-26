@@ -1,6 +1,11 @@
 import axios from "axios"
 import { Api, Order, Project } from "../common/types"
 
+/**
+ * TODOS
+ * 1. Implement the project fetch function (line 46)
+ */
+
 export const api: Api = {
   order: {
     async add(order) {
@@ -38,8 +43,8 @@ export const api: Api = {
   },
   project: {
     async fetch() {
-      const response = await axios.get<Project[]>("/project")
-      return response.data
+      // TODO: implement the project fetch function
+      return []
     }
   }
 }

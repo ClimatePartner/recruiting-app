@@ -19,6 +19,14 @@ import api from "./api"
 import OrderForm from "./OrderForm"
 import { Order, Project } from "../common/types"
 
+/**
+ * TODOS
+ * 1. Fetch projects from the api (line 107)
+ * 2. Maintain fetched projects in component state (line 60)
+ * 3. Show retrieved projects in the Projects table (line 190)
+ * 4. Handle errors received from the server using an appropriate component from Material-UI
+ */
+
 const useStyles = makeStyles({
   app: {
     padding: "2rem",
@@ -49,7 +57,7 @@ export default function App() {
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)")
   const [orders, setOrders] = useState<Record<string, Order>>({})
   const [selectedOrder, setSelectedOrder] = useState<Order>()
-  const [projects, setProjects] = useState<Project[]>([])
+  // TODO: maintain projects state
   const [isOpen, setIsOpen] = useState(false)
 
   const theme = useMemo(
@@ -91,14 +99,12 @@ export default function App() {
   )
 
   const handleDelete = useCallback((_id: string) => {
-    // TODO: handle errors received from the server
     api.order.delete(_id).then(setOrders)
   }, [])
 
   useEffect(() => {
-    // TODO: handle errors received from the server
     api.order.fetch().then(setOrders)
-    api.project.fetch().then(setProjects)
+    // TODO: fetch projects from api
   }, [])
 
   return (
@@ -135,7 +141,7 @@ export default function App() {
                 </TableHead>
                 <TableBody>
                   {Object.values(orders).map(
-                    ({ _id, name, offsetAmount }, index) => (
+                    ({ _id, projectName: name, offsetAmount }, index) => (
                       <TableRow key={_id} hover={true}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>{name}</TableCell>
@@ -181,18 +187,7 @@ export default function App() {
                     </TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {Object.values(projects).map(
-                    ({ _id, name, country, offsetAmount, technology }) => (
-                      <TableRow key={_id} hover={true}>
-                        <TableCell>{name}</TableCell>
-                        <TableCell>{country}</TableCell>
-                        <TableCell>{technology}</TableCell>
-                        <TableCell>{offsetAmount}</TableCell>
-                      </TableRow>
-                    )
-                  )}
-                </TableBody>
+                <TableBody>{/* TODO: add table body for projects */}</TableBody>
               </Table>
             </TableContainer>
           </Grid>
@@ -200,7 +195,6 @@ export default function App() {
 
         <OrderForm
           isOpen={isOpen}
-          projects={projects}
           selectedOrder={selectedOrder}
           handleChange={handleChange}
           handleClose={handleClose}
