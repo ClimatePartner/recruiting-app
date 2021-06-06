@@ -57,9 +57,9 @@ export default function OrderForm({
   const handleSubmit = useCallback(() => {
     const order = { projectId, projectName, offsetAmount }
     if (typeof selectedOrder === "undefined") {
-      api.order.add(order).then(handleChange)
+      api.orders.add(order).then(handleChange)
     } else {
-      api.order.update({ ...order, _id: selectedOrder._id }).then(handleChange)
+      api.orders.update({ ...order, _id: selectedOrder._id }).then(handleChange)
     }
     handleClose()
   }, [

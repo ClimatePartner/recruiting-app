@@ -18,7 +18,7 @@ export type Order = {
 }
 
 export type Api = {
-  order: {
+  orders: {
     add(
       order: Omit<Order, "_id" | "_createdAt" | "_modifiedAt">
     ): Promise<Order>
@@ -26,7 +26,7 @@ export type Api = {
     fetch(): Promise<Record<string, Order>>
     update(order: Omit<Order, "_createdAt" | "_modifiedAt">): Promise<Order>
   }
-  project: {
+  projects: {
     fetch(): Promise<Project[]>
   }
 }

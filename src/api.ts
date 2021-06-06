@@ -7,19 +7,19 @@ import { Api, Order, Project } from "../common/types"
  */
 
 export const api: Api = {
-  order: {
+  orders: {
     async add(order) {
-      const response = await axios.post<Order>("/order/add", order)
+      const response = await axios.post<Order>("/orders", order)
       return response.data
     },
     async delete(_id) {
-      const response = await axios.delete<Order[]>(`/order/delete/${_id}`)
+      const response = await axios.delete<Order[]>(`/orders/${_id}`)
       return response.data.reduce((acc, order) => {
         return { ...acc, [order._id]: order }
       }, {})
     },
     async fetch() {
-      const response = await axios.get<Order[]>("/order")
+      const response = await axios.get<Order[]>("/orders")
       return response.data
         .sort((a, b) => {
           if (a._createdAt < b._createdAt) {
@@ -37,11 +37,11 @@ export const api: Api = {
         }, {})
     },
     async update(order) {
-      const response = await axios.put<Order>("/order/update", order)
+      const response = await axios.put<Order>("/orders", order)
       return response.data
     }
   },
-  project: {
+  projects: {
     async fetch() {
       // TODO: implement the project fetch function
       return []
