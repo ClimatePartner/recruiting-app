@@ -99,11 +99,11 @@ export default function App() {
   )
 
   const handleDelete = useCallback((_id: string) => {
-    api.order.delete(_id).then(setOrders)
+    api.orders.delete(_id).then(setOrders)
   }, [])
 
   useEffect(() => {
-    api.order.fetch().then(setOrders)
+    api.orders.fetch().then(setOrders)
     // TODO: fetch projects from api
   }, [])
 

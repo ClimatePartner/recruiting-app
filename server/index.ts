@@ -18,7 +18,7 @@ const orders = new Datastore({
 // =================
 
 // Fetch all projects
-app.get("/project", async (_, response) => {
+app.get("/projects", async (_, response) => {
   try {
     const docs = await projects.find<Project>({}).exec()
     response.send(docs)
@@ -33,7 +33,7 @@ app.get("/project", async (_, response) => {
 // ===============
 
 // Fetch all orders
-app.get("/order", async (_, response) => {
+app.get("/orders", async (_, response) => {
   try {
     const docs = await orders.find<Order>({}).exec()
     response.send(docs)
@@ -41,7 +41,7 @@ app.get("/order", async (_, response) => {
 })
 
 // Add a new order
-app.post<{ Body: Order }>("/order/add", async (request, response) => {
+app.post<{ Body: Order }>("/orders", async (request, response) => {
   // TODO: update associated project to reflect the change in available offset
 
   try {
@@ -57,7 +57,7 @@ app.post<{ Body: Order }>("/order/add", async (request, response) => {
 
 // Update a single order
 app.put<{ Body: Order; Params: { id: string } }>(
-  "/order/:id",
+  "/orders/:id",
   async (request, response) => {
     try {
       const numUpdated = await orders.update(
@@ -76,18 +76,18 @@ app.put<{ Body: Order; Params: { id: string } }>(
 )
 
 // Delete a single order
-app.delete<{ Params: { _id: string } }>(
-  "/order/delete/:_id",
+app.delete<{ Params: { id: string } }>(
+  "/orders/:id",
   async (request, response) => {
-    const _id = request.params._id
+    const { id } = request.params
 
     try {
-      const numRemoved = await orders.remove({ _id }, {})
+      const numRemoved = await orders.remove({ _id: id }, {})
       if (numRemoved === 1) {
         const docs = await orders.find({})
         response.send(docs)
       } else {
-        throw new Error(`Cannot delete order with _id ${_id}. Order not found!`)
+        throw new Error(`Cannot delete order with id ${id}. Order not found!`)
       }
     } catch (error) {
       response.send(error)
