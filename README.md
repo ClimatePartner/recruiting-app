@@ -27,3 +27,14 @@ Important files to take note of are:
 - src/App.tsx
 - src/OrderForm.tsx
 - common/types.ts
+
+## Running tests
+If you intend to write tests, the test files should be created in a `__tests__` sub folder of `src` and `server` respectfully.
+In order to run the tests please execute:
+```bash
+yarn client:test
+```
+or 
+```bash
+yarn server:test
+```

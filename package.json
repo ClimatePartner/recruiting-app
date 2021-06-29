@@ -8,6 +8,7 @@
     "client:test": "react-scripts test",
     "client:eject": "react-scripts eject",
     "server:start": "nodemon --exec 'ts-eager' server/index.ts",
+    "server:test": "yarn jest --rootDir=./server --passWithNoTests",
     "start": "concurrently \"yarn server:start\" \"yarn client:start\""
   },
   "eslintConfig": {
